@@ -1,0 +1,7 @@
+<odoo>
+    <data>
+        <menuitem id="menu_lmovil" name="Litoral Movil" sequence="3"
+            web_icon="litoralmovil_busquedas,static/description/icon.png" />
+            <menuitem action="action_lmovil_busquedas" id="menu_lmovil_busquedas" parent="menu_lmovil" name="Busquedas" sequence="1" />
+    </data>
+</odoo>

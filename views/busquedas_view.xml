@@ -1,0 +1,160 @@
+<?xml version="1.0"?>
+<odoo>
+    <data>
+        <!-- Menu creado -->
+        <record id="busquedas_kanban_view" model="ir.ui.view">
+            <field name="name">lm.busquedas.view.kanban</field>
+            <field name="model">lm.busquedas</field>
+            <field name="arch" type="xml">
+                <kanban colors="blue:state=='ped_bsc';red:state=='bsc_rechazada';grey:state=='bsc_autorizada';yellow:state=='bsc_progreso';green:state=='bsc_finalizada'" default_group_by="state">
+                    <!--<kanban default_group_by="stage_id" quick_create="false">-->
+                    <field name="state" options="{&quot;group_by_tooltip&quot;: {&quot;requirements&quot;: &quot;Description&quot;}}" />
+                    <field name="color" />
+                    <field name="kanban_state" />
+                    <field name="priority" />
+                    <field name="puesto" />
+                    <field name="is_done" />
+                    <templates>
+                        <t t-name="kanban-box">
+                            <!-- <div t-attf-class="{{!selection_mode ? 'oe_kanban_color_' + kanban_getcolor(record.color.raw_value) : ''}} oe_kanban_card oe_kanban_global_click oe_applicant_kanban oe_semantic_html_override">-->
+                            <div class="oe_kanban_card">
+                                <div class="o_dropdown_kanban dropdown">
+                                    <a class="dropdown-toggle o-no-caret btn" role="button" data-toggle="dropdown" href="#" aria-label="Dropdown menu" title="Dropdown menu">
+                                        <span class="fa fa-ellipsis-v" />
+                                    </a>
+                                    <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+
+                                        <t t-if="widget.editable">
+                                            <li>
+                                                <a type="edit">Edit</a>
+                                            </li>
+                                        </t>
+                                        <t t-if="widget.deletable">
+                                            <li>
+                                                <a type="delete">Delete</a>
+                                            </li>
+                                        </t>
+                                        <!-- Call a server-side Model method: -->
+                                        <t t-if="!record.is_done.value">
+                                            <li>
+                                                <a name="do_toggle_done" type="object">Set as Done</a>
+                                            </li>
+                                        </t>
+                                        <!-- Color picker option: -->
+
+                                    </ul>
+                                </div>
+                                <div class="oe_kanban_content">
+                                    Puesto :
+                                    <field name="puesto" />
+                                    <div>
+                                        <strong>
+                                            <div>
+                                                <a type="open">
+                                                    Solicitante :
+                                                    <field name="nom_sol" />
+                                                </a>
+                                            </div>
+                                            <div>
+                                                <a type="open">
+                                                    Fecha de ingreso :
+                                                    <field name="f_ingreso" />
+                                                </a>
+                                            </div>
+                                        </strong>
+                                    </div>
+                                    <!-- Content elements and fields go here... -->
+                                    <div class="oe_kanban_content">
+                                        <div class="oe_kanban_footer">
+                                            <div>
+                                                <!-- Left hand footer... -->
+                                                <field name="priority" widget="priority" />
+                                            </div>
+                                            <div>
+                                                <!-- Right hand footer... -->
+                                                <field name="kanban_state" widget="kanban_state_selection" />
+                                            </div>
+                                        </div>
+                                    </div> <!-- oe_kanban_content -->
+                                </div>
+                                <div class="oe_clear" />
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+
+        <record id="lm_busquedas_form" model="ir.ui.view">
+            <field name="name">lm.busquedas.view.form</field>
+            <field name="model">lm.busquedas</field>
+            <field name="arch" type="xml">
+                <form string="Busquedas de Personal">
+                    <header>
+                        <field name="state" widget="statusbar" options="{'clickable': '1'}" />
+                        <field name="kanban_state" widget="kanban_state_selection" />
+                        <field name="priority" widget="priority" />
+                         <button string="Activar Busqueda" name="activar_busqueda" type="object" default_focus="1" class="btn-primary" attrs="{'invisible': [('state', 'in', ['ped_bsc'])]}"/>
+                         <button string="notificar la solicitud" name="notificacion_busqueda" type="object" default_focus="1" class="btn-primary" attrs="{'invisible': [('notificacion', 'in', ['si'])]}"/>
+                    </header>
+                    <sheet>
+                        <group string="Informacion General de la Busqueda">
+                            <group>
+                                <field name="nom_sol" />
+                                <field name="puesto" />
+                                <field name="motivo" />
+                                <field name="reemplazo_de" />
+                                <field name="cantidad" />
+                                <field name="reporta_a" />
+                                <field name="convenio" />
+                            </group>
+                            <group>
+                                <field name="tipo_busqueda" />
+                                <field name="f_ingreso" />
+                                <field name="jornada" />
+                                <field name="gcia_aprobacion" />
+                                <field name="centro_costo" />
+                                <field name="razon_social" />
+                                <field name="notificacion" attrs="{'readonly': [('notificacion', '!=', False)]}" />
+                            </group>
+                        </group>
+                        <group string="Perfiles de Sistemas">
+                            <group>
+                                <field name="perfil_site" />
+                                <field name="perfil_caddis" />
+                            </group>
+                            <group>
+                                <field name="perfil_ammo" />
+                                <field name="perfil_stealth" />
+                            </group>
+                        </group>
+                        <group string="Elementos de Trabajo">
+                            <group>
+                                <field name="demo" />
+                                <field name="notebook" />
+                                <field name="remera" />
+                                <field name="campera" />
+                               
+                            </group>
+                            <group>
+                                <field name="mochila" />
+                                <field name="credencial" />
+                                <field name="mail" />
+                                <field name="ticket_card" />
+                                <field name="linea" />
+                                <field name="nombre_usuario_actual" attrs="{'readonly': [('nombre_usuario_actual', '!=', False)]}"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_lmovil_busquedas" model="ir.actions.act_window">
+            <field name="name">Busquedas</field>
+            <field name="res_model">lm.busquedas</field>
+            <field name="view_mode">kanban,form</field>
+        </record>
+    </data>
+</odoo>
