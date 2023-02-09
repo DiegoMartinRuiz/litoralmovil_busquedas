@@ -1,0 +1,2 @@
+Para que funcione la restriccion de usuarios se debe crear un grupo Ejemplo RRHH, a dicho grupo se le deben conceder acceso total 
+al modelo lm_busquedas y en el grupo usuario interno de odoo solo se deben dejar los permisos de lectura y creacion
